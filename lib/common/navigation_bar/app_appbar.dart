@@ -4,13 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../data/repositories/authentication/authentication_repository.dart';
-import '../../features/personalization/controllers/user_controller.dart';
+import '../../features/authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../features/settings/app_settings.dart';
-import '../../features/settings/setting_screen.dart';
+import '../../features/settings/screen/setting_screen.dart';
 import '../../features/shop/screens/search/search.dart';
 import '../../services/share/share.dart';
-import '../../utils/constants/colors.dart';
 import '../../utils/constants/icons.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/device/device_utility.dart';
@@ -72,9 +70,9 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget{
             if(showCartIcon)
               TCartCounterIcon(),
             if(seeLogoutButton) ...[
-                Obx(() => UserController.instance.isUserLogin.value
+                Obx(() => AuthenticationController.instance.isUserLogin.value
                     ? InkWell(
-                          onTap: () => UserController.instance.logout(),
+                          onTap: () => AuthenticationController.instance.logout(),
                           child: Row(
                             children: [
                               Text('Logout'),

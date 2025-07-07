@@ -4,22 +4,16 @@ import 'package:get_storage/get_storage.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
 import '../../../../common/widgets/success_screen/success_screen.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
-import '../../../../utils/constants/enums.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/local_storage_constants.dart';
-import '../../../../utils/constants/text_strings.dart';
-import '../../../../utils/helpers/navigation_helper.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
-import '../../../personalization/controllers/address_controller.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../settings/app_settings.dart';
 import '../../../settings/controllers/settings_controller.dart';
 import '../../models/coupon_model.dart';
 import '../../models/order_model.dart';
 import '../../models/payment_model.dart';
-import '../../screens/orders/orders.dart';
 import '../cart_controller/cart_controller.dart';
 import '../coupon/coupon_controller.dart';
 import '../order/order_controller.dart';
@@ -45,7 +39,7 @@ class CheckoutController extends GetxController {
 
   final networkManager = Get.put(NetworkManager());
   final cartController = Get.put(CartController());
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
   final settingsController = Get.put(SettingsController());
 
   @override
@@ -137,19 +131,19 @@ class CheckoutController extends GetxController {
     // FBAnalytics.logBeginCheckout(cartItems: cartController.cartItems);
     try {
       // Start loader
-      TFullScreenLoader.openLoadingDialog('Processing your order', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('Processing your order', Images.docerAnimation);
 
       // Check internet connectivity
       final isConnected = await networkManager.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
 
       // Validate Address, Phone, and Email
       List<String> validationErrors = userController.customer.value.billing!.validateFields();
       if (validationErrors.isNotEmpty) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: '"${validationErrors.join(', ')}", Update in Address');
         return;
       }
@@ -160,14 +154,14 @@ class CheckoutController extends GetxController {
       // Check if COD is disabled or not
       checkIsCODDisabled();
       if (isCODDisabled.value) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: "COD is Unavailable for this ${codDisabledReason.value}");
       }
 
       // Check Payment Method
       final PaymentModel paymentMethod = selectedPaymentMethod.value;
       if (paymentMethod.id.isEmpty) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'Please select payment Method');
         return;
       }
@@ -179,7 +173,7 @@ class CheckoutController extends GetxController {
       // Update the cart status
       clearCheckout();
       updateCheckout();
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       // Show success screen
       // Get.close(1);
       Get.off(() => TSuccessScreen(
@@ -187,7 +181,7 @@ class CheckoutController extends GetxController {
       ));
 
     } catch (error) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     }
   }

@@ -7,17 +7,13 @@ import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
 import '../../../../common/dialog_box_massages/animation_loader.dart';
 import '../../../../common/widgets/product/product_cards/product_card_cart_items.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/helpers/navigation_helper.dart';
-import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
 import '../../../settings/app_settings.dart';
 import '../../controllers/cart_controller/cart_controller.dart';
 import '../../controllers/checkout_controller/checkout_controller.dart';
-import '../../controllers/order/order_controller.dart';
 import '../checkout/checkout.dart';
 
 
@@ -31,7 +27,7 @@ class CartScreen extends StatelessWidget {
     FBAnalytics.logPageView('cart_screen');
     FBAnalytics.logViewCart(cartItems: cartController.cartItems);
     // make empty cart animation
-    final emptyWidget = TAnimationLoaderWidgets(
+    final emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! Cart is Empty...',
       animation: Images.addToCartAnimation,
       showAction: true,
@@ -72,7 +68,6 @@ class CartScreen extends StatelessWidget {
                       direction: DismissDirection.endToStart, // Swipe left to remove
                       onDismissed: (direction) {
                         cartController.removeFromCart(item: item);
-                        AppMassages.showSnackBar(massage: 'Item removed');
                       },
                       background: Container(
                         alignment: Alignment.centerRight,

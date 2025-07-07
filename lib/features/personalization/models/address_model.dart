@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../utils/constants/db_constants.dart';
 import '../../../utils/data/state_iso_code_map.dart';
@@ -40,7 +39,7 @@ class AddressModel {
     this.selectedAddress = true,
   });
 
-  String get formattedPhoneNo => TFormatter.formatPhoneNumber(phone!);
+  String get formattedPhoneNo => AppFormatter.formatPhoneNumber(phone!);
   String get name => '$firstName $lastName';
 
   static AddressModel empty() => AddressModel(id: '');
@@ -120,48 +119,6 @@ class AddressModel {
       country: CountryData.getCountryFromISOCode(data[AddressFieldName.country].isEmpty ? 'IN' : data[AddressFieldName.country]),
     );
   }
-
-  factory AddressModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>;
-    return AddressModel(
-      id: snapshot.id,
-      firstName: data[AddressFieldName.firstName] ?? '',
-      lastName: data[AddressFieldName.lastName] ?? '',
-      phone: data[AddressFieldName.phone] ?? '',
-      address1: data[AddressFieldName.address1] ?? '',
-      address2: data[AddressFieldName.address2] ?? '',
-      city: data[AddressFieldName.city] ?? '',
-      state: data[AddressFieldName.state] ?? '',
-      pincode: data[AddressFieldName.pincode] ?? '',
-      country: data[AddressFieldName.country] ?? '',
-      dateCreated: (data[AddressFieldName.dateCreated] as Timestamp?)?.toDate() ?? DateTime(2000),
-      dateModified: (data[AddressFieldName.dateModified] as Timestamp?)?.toDate() ?? DateTime(2000),
-      selectedAddress: data[AddressFieldName.selectedAddress]as bool,
-    );
-  }
-
-  factory AddressModel.fromQuerySnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
-    if (snapshot.docs.isEmpty) {
-      return empty(); // Assuming empty() returns a default or empty AddressModel
-    }
-    final data = snapshot.docs.first.data();
-    return AddressModel(
-      id: snapshot.docs.first.id,
-      firstName: data[AddressFieldName.firstName] ?? '',
-      lastName: data[AddressFieldName.lastName] ?? '',
-      phone: data[AddressFieldName.phone] ?? '',
-      address1: data[AddressFieldName.address1] ?? '',
-      address2: data[AddressFieldName.address2] ?? '',
-      city: data[AddressFieldName.city] ?? '',
-      state: data[AddressFieldName.state] ?? '',
-      pincode: data[AddressFieldName.pincode] ?? '',
-      country: data[AddressFieldName.country] ?? '',
-      dateCreated: (data[AddressFieldName.dateCreated] as Timestamp?)?.toDate() ?? DateTime(2000),
-      dateModified: (data[AddressFieldName.dateModified] as Timestamp?)?.toDate() ?? DateTime(2000),
-      selectedAddress: data[AddressFieldName.selectedAddress]as bool,
-    );
-  }
-
 
   @override
   String toString() {

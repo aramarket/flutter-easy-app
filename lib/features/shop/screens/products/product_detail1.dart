@@ -128,7 +128,7 @@ class _ProductDetailScreenState1 extends State<ProductDetailScreen1> {
                 return const SingleProductShimmer();
               }
               if(_product.value.id == 0) {
-                return const TAnimationLoaderWidgets(
+                return const AnimationLoaderWidgets(
                   text: 'Whoops! No Product Found...',
                   animation: Images.pencilAnimation,
                 );

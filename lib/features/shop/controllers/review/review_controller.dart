@@ -4,12 +4,12 @@ import 'package:get/get.dart';
 import '../../../../common/dialog_box_massages/dialog_massage.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
-import '../../../../data/repositories/woocommerce_repositories/product_review/product_review_repository.dart';
+import '../../../../data/repositories/woocommerce_repositories/reviews/reviews_repository.dart';
 import '../../../../services/app_review/app_review.dart';
 import '../../../../utils/constants/db_constants.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../models/review_model.dart';
 
 class ReviewController extends GetxController {
@@ -31,8 +31,8 @@ class ReviewController extends GetxController {
   final editProductReview = TextEditingController();
   GlobalKey<FormState> editReviewFormKey = GlobalKey<FormState>();
 
-  final wooReviewRepository = Get.put(WooReviewRepository());
-  final userController = Get.put(UserController());
+  final wooReviewRepository = Get.put(WooReviewsRepository());
+  final userController = Get.put(AuthenticationController());
 
   // Get reviews by product id
   Future<void> getReviewsByProductId(String productId) async {
@@ -63,19 +63,19 @@ class ReviewController extends GetxController {
   Future<void> submitReview(int productId) async {
     try {
       //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are adding your review..', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('We are adding your review..', Images.docerAnimation);
       //check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       if(!submitReviewFormKey.currentState!.validate()) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       if (rating.value == 0) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'Star rating is mandatory');
         return;
       }
@@ -100,12 +100,12 @@ class ReviewController extends GetxController {
       rating.value = 0;
 
       // remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.showToastMessage(message: 'Review added successfully!');
       Get.back();
     } catch (error) {
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     } finally {
       Future.delayed(Duration(seconds: 3), () {
@@ -118,19 +118,19 @@ class ReviewController extends GetxController {
   Future<void> updateReview(int reviewId) async {
     try {
       //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are updating your review..', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('We are updating your review..', Images.docerAnimation);
       //check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       if(!editReviewFormKey.currentState!.validate()) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       if (editRating.value == 0) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'Star rating is mandatory');
         return;
       }
@@ -147,12 +147,12 @@ class ReviewController extends GetxController {
         reviews[index] = updatedReview;
       }
 
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.showToastMessage(message: 'Review updated successfully!');
       Get.back();
     } catch (error) {
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     }
   }

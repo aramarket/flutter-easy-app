@@ -8,8 +8,18 @@ class AppMassages  extends GetxController {
   static bool _isToastVisible = false;
   static int massagesDuration = 1500;
 
-  static void showSnackBar({required String massage}) {
-    final snackBar = SnackBar(content: Text(massage));
+  static void showSnackBar({required String massage, VoidCallback? onUndo}) {
+    final snackBar = SnackBar(
+      content: Text(massage),
+      duration: Duration(milliseconds: massagesDuration),
+      action: onUndo != null
+          ? SnackBarAction(
+        label: 'Undo',
+        onPressed: onUndo,
+        textColor: Colors.blue,
+      )
+          : null,
+    );
 
     ScaffoldMessenger.of(Get.context!)
       ..hideCurrentSnackBar()

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../utils/constants/api_constants.dart';
+import '../../../../../utils/constants/api_constants.dart';
 
 class WhatsappApi extends GetxController {
   static WhatsappApi get instance => Get.find();

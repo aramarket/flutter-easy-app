@@ -22,7 +22,6 @@ class MobileLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('mobile_login_screen');
     final otpController = Get.put(OTPController());
-    final bool isPhoneOtpLogin = false;
     final bool isWhatsappOtpLogin = true;
     return Scaffold(
       // appBar: const TAppBar2(titleText: "Login", showBackArrow: true),
@@ -76,17 +75,6 @@ class MobileLoginScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: AppSizes.inputFieldSpace),
-                    if(isPhoneOtpLogin)
-                      SizedBox(
-                      width: double.infinity,
-                      child: Obx(() => ElevatedButton(
-                            onPressed: () => otpController.fast2SmsSendOpt(phone: otpController.phoneNumber.value),
-                            child: otpController.isLoading.value
-                                ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2,))
-                                : Text('Get OTP', style: TextStyle(fontWeight: FontWeight.w500),)
-                        ),
-                      ),
-                    ),
 
                     if(isWhatsappOtpLogin)
                       SizedBox(

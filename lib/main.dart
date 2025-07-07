@@ -21,56 +21,34 @@ import 'utils/theme/theme_controller.dart';
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  // await Firebase.initializeApp();
-  FirebaseNotification.handleMassage(message);
+  // Ensure initialized BEFORE using any Firebase services
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  await FirebaseNotification.showNotification(message);
   // FirebaseNotification.showNotification(message);
   // print("Handling a background message: ${message.messageId}");
 }
 
 void main() async {
-
-  // Load env variable
-  await dotenv.load(fileName: ".env");
-
-  // Add widgets Binding
-  final WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  // GetX Local Storage
-  await GetStorage.init();
-
-  //await splash until other item load
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  await CacheHelper.initializeHive();
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Initialize Firebase Notifications
+  // Load env variable
+  await dotenv.load(fileName: ".env");
+
+  // GetX Local Storage
+  await GetStorage.init();
+
+  await CacheHelper.initializeHive();
+
+  // Initialize Firebase Notifications FIRST
   await FirebaseNotification.initNotification();
 
-
-  // To handle messages while your application is terminated
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-  // Initialize with the settings from NotificationSettings
-  LocalNotificationServices.localNotificationsPlugin.initialize(
-    LocalNotificationServices.initializationSettings, //this line for init local notification setting
-    onDidReceiveNotificationResponse: (response) {  // line for when user click on notification when app is open
-      InternalAppRoutes.handleInternalRoute(url: response.payload.toString());
-      // AppRoutes.pageRouteHandle(routeName: response.payload.toString());
-    },
-    // onDidReceiveBackgroundNotificationResponse: (response) {  // line for when user click on notification when app is close
-    //   InternalAppRoutes.internalRouteHandle(url: response.payload.toString());
-    //   // AppRoutes.pageRouteHandle(routeName: response.payload.toString());
-    // }
-  );
-
-  // Initialize App settings
-  await AppSettings.init(); // Load version info before app starts
-
-  // Initialize Firebase Analytics
+  // Then initialize other services
+  await AppSettings.init();
   await FBAnalytics.setDefaultEventParameters();
 
   runApp(MyApp());
@@ -97,11 +75,11 @@ class _MyAppState extends State<MyApp> {
       darkTheme: AppAppTheme.darkTheme,
       initialBinding: GeneralBindings(),
       home: NavigationHelper.navigateToBottomNavigationWidget(),
-
+ 
       onGenerateRoute: (settings) {
-        return ExternalAppRoutes.handleDeepLink(settings: settings);
+        return ExternalAppRoutes.handleDeepLink(settings: settings)
+            ?? MaterialPageRoute(builder: (_) => NavigationHelper.navigateToBottomNavigationWidget());
       },
-
     ));
   }
 }

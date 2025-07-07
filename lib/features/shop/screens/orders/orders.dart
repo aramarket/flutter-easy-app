@@ -4,20 +4,17 @@ import 'package:get/get.dart';
 import '../../../../common/layout_models/product_grid_layout.dart';
 import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
-import '../../../../common/text/section_heading.dart';
 import '../../../../common/dialog_box_massages/animation_loader.dart';
 import '../../../../common/widgets/shimmers/order_shimmer.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/navigation_helper.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/address_controller.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../controllers/order/order_controller.dart';
-import 'widgets/order_list_items.dart';
+import 'widgets/order_tile.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({super.key});
@@ -27,7 +24,7 @@ class OrderScreen extends StatelessWidget {
     FBAnalytics.logPageView('order_screen');
     final orderController = Get.put(OrderController());
     final ScrollController scrollController = ScrollController();
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     final double orderTileHeight = AppSizes.orderTileHeight;
 
     orderController.refreshOrders();
@@ -69,7 +66,7 @@ class OrderScreen extends StatelessWidget {
                   if(orderController.isLoading.value){
                     return const OrderShimmer(itemCount: 4);
                   }else if(orderController.orders.isEmpty) {
-                    return TAnimationLoaderWidgets(
+                    return AnimationLoaderWidgets(
                       text: 'Whoops! Order is Empty...',
                       animation: Images.orderCompletedAnimation,
                       showAction: true,
@@ -82,7 +79,7 @@ class OrderScreen extends StatelessWidget {
                       itemCount: orderController.isLoadingMore.value ? orderController.orders.length + 1 : orderController.orders.length,
                       itemBuilder: (context, index) {
                         if (index < orderController.orders.length) {
-                          return SingleOrderTile(order: orderController.orders[index]);
+                          return OrderTile(order: orderController.orders[index]);
                         } else {
                           return const OrderShimmer();
                         }

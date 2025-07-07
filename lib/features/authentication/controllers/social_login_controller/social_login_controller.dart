@@ -5,11 +5,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
+import '../../../../data/repositories/firebase/authentication/firebase_auth_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/customers/woo_customer_repository.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../Authentication_controller/authentication_controller.dart';
 import '../../screens/create_account/signup.dart';
 import '../create_account_controller/signup_controller.dart';
 import '../login_controller/login_controller.dart';
@@ -17,9 +17,9 @@ import '../login_controller/login_controller.dart';
 class SocialLoginController extends GetxController{
   static SocialLoginController get instance => Get.find();
 
-  final authenticationRepository = Get.put(AuthenticationRepository());
+  final firebaseAuthRepository = Get.put(FirebaseAuthRepository());
   final wooCustomersRepository = Get.put(WooCustomersRepository());
-  final userController = Get.put(UserController());
+  final authenticationController = Get.put(AuthenticationController());
   final loginController = Get.put(LoginController());
 
   //Google SignIn Authentication
@@ -27,22 +27,22 @@ class SocialLoginController extends GetxController{
     String googleEmail = ''; // Initialize with an empty string
     try {
       // Start Loading
-      TFullScreenLoader.openLoadingDialog('Logging you in...', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('Logging you in...', Images.docerAnimation);
       final isConnected = await Get.put(NetworkManager()).isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       // Google Authentication
-      final userCredentials = await authenticationRepository.signInWithGoogle();
+      final userCredentials = await firebaseAuthRepository.signInWithGoogle();
       googleEmail = userCredentials.user?.email ?? ''; // Assign the value here
       final customer = await wooCustomersRepository.fetchCustomerByEmail(googleEmail);
 
-      TFullScreenLoader.stopLoading();
-      userController.login(customer: customer, loginMethod: 'Google');
+      FullScreenLoader.stopLoading();
+      authenticationController.login(user: customer, loginMethod: 'Google');
     } catch (error) {
       // Remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
       if (error.toString().contains('Customer not found')) {

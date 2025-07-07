@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../../common/widgets/custom_shape/containers/rounded_container.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/shimmers/review_shimmer_on_product.dart';
-import '../../../../data/repositories/woocommerce_repositories/product_review/product_review_repository.dart';
+import '../../../../data/repositories/woocommerce_repositories/reviews/reviews_repository.dart';
 import '../../../../utils/constants/api_constants.dart';
 import '../../../../utils/constants/icons.dart';
 import '../../../../utils/constants/sizes.dart';
@@ -24,7 +24,7 @@ class ProductReviewHorizontal extends StatefulWidget {
 }
 
 class _ProductReviewHorizontalState extends State<ProductReviewHorizontal> {
-  final wooReviewRepository = Get.put(WooReviewRepository());
+  final wooReviewRepository = Get.put(WooReviewsRepository());
 
   late final ScrollController _scrollController;
   final RxInt _currentPage = 1.obs;

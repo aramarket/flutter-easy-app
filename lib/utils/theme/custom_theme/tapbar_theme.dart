@@ -5,7 +5,7 @@ import '../../constants/colors.dart';
 class AppTabBarTheme {
   AppTabBarTheme._(); // Private constructor to prevent instantiation
 
-  static const lightTabBarTheme = TabBarTheme(
+  static const lightTabBarTheme = TabBarThemeData(
     indicatorSize: TabBarIndicatorSize.label,
     labelColor: AppColors.labelColorLight, // Active tab text color
     unselectedLabelColor: AppColors.unselectedLabelColorLight, // Inactive tab text color
@@ -22,7 +22,7 @@ class AppTabBarTheme {
     ),
   );
 
-  static const darkTabBarTheme = TabBarTheme(
+  static const darkTabBarTheme = TabBarThemeData(
     indicatorSize: TabBarIndicatorSize.label,
     labelColor: AppColors.labelColorDark,
     unselectedLabelColor: AppColors.unselectedLabelColorDark,

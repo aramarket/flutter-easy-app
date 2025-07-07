@@ -1,11 +1,9 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 
-import '../../data/repositories/authentication/authentication_repository.dart';
-import '../../features/personalization/controllers/user_controller.dart';
+import '../../features/authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../features/settings/app_settings.dart';
 import '../../features/shop/controllers/checkout_controller/checkout_controller.dart';
-import '../../features/shop/controllers/order/order_controller.dart';
 import '../../features/shop/models/cart_item_model.dart';
 import '../../features/shop/models/product_model.dart';
 
@@ -22,7 +20,7 @@ class FBAnalytics {
   static final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: _analytics);
 
-  static final userController = Get.put(UserController());
+  static final userController = Get.put(AuthenticationController());
   static final checkoutController = Get.put(CheckoutController());
 
   static Future<void> setDefaultEventParameters() async {

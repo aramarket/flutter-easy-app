@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../common/widgets/custom_shape/image/circular_image.dart';
 import '../../../../../utils/constants/colors.dart';
 import '../../../../../utils/constants/sizes.dart';
-import '../../../../personalization/controllers/user_controller.dart';
+import '../../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../../personalization/models/user_model.dart';
 import '../../../controllers/review/all_review_controller.dart';
 import '../../../models/cart_item_model.dart';
@@ -21,7 +21,7 @@ class ReviewYourPurchaseTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CustomerModel customer = Get.find<UserController>().customer.value;
+    final CustomerModel customer = Get.find<AuthenticationController>().customer.value;
     final reviewYourPurchasesController = Get.find<ReviewYourPurchasesController>();
 
     const double allReviewTileHeight = AppSizes.reviewYourPurchaseTileHeight;

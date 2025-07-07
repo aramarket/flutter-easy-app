@@ -27,7 +27,7 @@ class TSubCategoriesScreen extends StatelessWidget {
             future: productController.getProductsByCategoryId(category.id ?? '', '1'),
             builder: (context, snapshot){
               //Nothing Found Widget
-              const emptyWidget = TAnimationLoaderWidgets(
+              const emptyWidget = AnimationLoaderWidgets(
                 text: 'Whoops! No product fount in this category',
                 animation: Images.pencilAnimation,
               );

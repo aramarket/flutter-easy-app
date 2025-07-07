@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../../common/text/section_heading.dart';
 import '../../../../../common/widgets/shimmers/order_shimmer.dart';
-import '../../../../personalization/controllers/user_controller.dart';
+import '../../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../../personalization/models/address_model.dart';
 import '../../../../personalization/screens/user_address/address_widgets/single_address.dart';
 import '../../../../personalization/screens/user_address/update_user_address.dart';
@@ -14,7 +14,7 @@ class TBillingAddressSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

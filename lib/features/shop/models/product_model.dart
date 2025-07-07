@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../../utils/constants/db_constants.dart';
@@ -319,51 +318,6 @@ class ProductModel {
       ProductFieldName.stockStatus: stockStatus,
       ProductFieldName.isCODBlocked: isCODBlocked,
     };
-  }
-
-  //Map json oriented document snapshot form firebase to model
-  factory ProductModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
-    if(document.data() == null) return ProductModel.empty();
-    final data = document.data()!;
-    return ProductModel(
-      id: int.parse(document.id),
-      // title: data[ProductFieldName.title],
-      // mainImage: data[ProductFieldName.mainImage],
-      // price: data[ProductFieldName.price] ?? 0,
-      // stock: data[ProductFieldName.stock] ?? 0,
-      // available: data[ProductFieldName.available] ?? true,
-      // isFeatured: data[ProductFieldName.isFeatured] ?? false,
-      // salePrice: data[ProductFieldName.salePrice] ?? 0,
-      // categoryId: data[ProductFieldName.categoryId] ?? '',
-      // brandId: data[ProductFieldName.categoryId] ?? '',
-      // description: data[ProductFieldName.description] ?? '',
-      // shortDescription: data[ProductFieldName.shortDescription] ?? '',
-      // productType: data[ProductFieldName.productType] ?? '',
-      // images: data[ProductFieldName.images] !=null ? List<String>.from(data[ProductFieldName.images]) : [],
-      // productAttributes: (data['ProductAttributes'] as List<dynamic>).map((e) => ProductAttributeModel.fromJson(e)).toList(),
-    );
-  }
-
-  //Map json oriented document snapshot form firebase to model
-  factory ProductModel.fromQuerySnapshot(QueryDocumentSnapshot<Object?> document) {
-    final data = document.data() as Map<String, dynamic>;
-    return ProductModel(
-      id: int.parse(document.id),
-      // title: data[ProductFieldName.title],
-      // mainImage: data[ProductFieldName.mainImage],
-      // price: data[ProductFieldName.price] ?? 0,
-      // stock: data[ProductFieldName.stock] ?? 0,
-      // available: data[ProductFieldName.available] ?? true,
-      // isFeatured: data[ProductFieldName.isFeatured] ?? false,
-      // salePrice: data[ProductFieldName.salePrice] ?? 0,
-      // categoryId: data[ProductFieldName.categoryId] ?? '',
-      // brandId: data[ProductFieldName.categoryId] ?? '',
-      // description: data[ProductFieldName.description] ?? '',
-      // shortDescription: data[ProductFieldName.shortDescription] ?? '',
-      // productType: data[ProductFieldName.productType] ?? '',
-      // images: data[ProductFieldName.images] !=null ? List<String>.from(data[ProductFieldName.images]) : [],
-      // productAttributes: (data['ProductAttributes'] as List<dynamic>).map((e) => ProductAttributeModel.fromJson(e)).toList(),
-    );
   }
 
   // Add the copyWith method

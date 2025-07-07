@@ -5,7 +5,6 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/navigation_helper.dart';
-import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
 import '../../controllers/recently_viewed/recently_viewed_controller.dart';
 import '../products/scrolling_products.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 
 import '../../../../common/layout_models/product_grid_layout.dart';
 import '../../../../common/navigation_bar/app_appbar.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 
 class RecentlyViewed extends StatelessWidget {
   const RecentlyViewed({super.key});
@@ -23,7 +21,6 @@ class RecentlyViewed extends StatelessWidget {
     FBAnalytics.logPageView('recently_viewed_screen');
     final ScrollController scrollController = ScrollController();
     final recentlyViewedController = Get.put(RecentlyViewedController());
-    final authenticationRepository = Get.put(AuthenticationRepository());
 
     recentlyViewedController.refreshRecentProducts();
 
@@ -44,7 +41,7 @@ class RecentlyViewed extends StatelessWidget {
       }
     });
 
-    final Widget emptyWidget = TAnimationLoaderWidgets(
+    final Widget emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! No Recent Products...',
       animation: Images.pencilAnimation,
       showAction: true,

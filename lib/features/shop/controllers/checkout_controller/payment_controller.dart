@@ -12,7 +12,7 @@ import '../../../../utils/constants/api_constants.dart';
 import '../../../../utils/constants/db_constants.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../../../utils/constants/image_strings.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../settings/app_settings.dart';
 import '../../models/order_model.dart';
 import '../../models/payment_model.dart';
@@ -21,7 +21,7 @@ import 'checkout_controller.dart';
 class PaymentController extends GetxController {
   static PaymentController get instance => Get.find();
 
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
   final checkoutController = Get.put(CheckoutController());
 
   static List<Map<String, String>> paymentJson = [

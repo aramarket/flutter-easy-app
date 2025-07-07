@@ -57,7 +57,7 @@ class CategoryScreen extends StatelessWidget {
               if (categoryController.isLoading.value){
                 return const CategoryTileShimmer(itemCount: 20, crossAxisCount: 3);
               } else if(categoryController.categories.isEmpty) {
-                return const TAnimationLoaderWidgets(
+                return const AnimationLoaderWidgets(
                   text: 'Whoops! Categories is Empty...',
                   animation: Images.pencilAnimation,
                 );

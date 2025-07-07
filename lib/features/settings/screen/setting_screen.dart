@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../common/dialog_box_massages/dialog_massage.dart';
-import '../../common/navigation_bar/app_appbar.dart';
-import '../../common/styles/spacing_style.dart';
-import '../../services/firebase_analytics/firebase_analytics.dart';
-import '../../utils/cache/cache.dart';
-import '../../utils/theme/theme_controller.dart';
-import 'controllers/settings_controller.dart';
+import '../../../common/dialog_box_massages/dialog_massage.dart';
+import '../../../common/navigation_bar/app_appbar.dart';
+import '../../../common/styles/spacing_style.dart';
+import '../../../services/firebase_analytics/firebase_analytics.dart';
+import '../../../utils/cache/cache.dart';
+import '../../../utils/theme/theme_controller.dart';
+import '../controllers/settings_controller.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});

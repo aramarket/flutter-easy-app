@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../common/dialog_box_massages/dialog_massage.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
-import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/products/woo_product_repositories.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/db_constants.dart';
@@ -12,8 +12,6 @@ import '../../../../utils/constants/local_storage_constants.dart';
 import '../../models/cart_item_model.dart';
 import '../../models/product_model.dart';
 import '../../screens/cart/cart.dart';
-import '../order/order_controller.dart';
-import '../product/product_controller.dart';
 
 class CartController extends GetxController {
   static CartController get instance => Get.find();
@@ -86,19 +84,26 @@ class CartController extends GetxController {
       // Convert the productModel to a cartItemModel with the give quantity
       final convertedCartItem = convertProductToCart(product: product, quantity: 1);
       removeFromCart(item: convertedCartItem);
-      AppMassages.showToastMessage(message: 'Product removed from the Cart.');
     }
   }
 
-  // Remove item to cart without dialog
   void removeFromCart({required CartModel item}) {
-    // Log the add to cart event
+    // Log the remove from cart event
     FBAnalytics.logRemoveFromCart(cartItem: item);
+
     int index = cartItems.indexWhere((cartItem) => cartItem.productId == item.productId);
-    if(index >= 0) {
-      cartItems.removeAt(index);
+    if (index >= 0) {
+      // Save item temporarily for undo
+      final removedItem = cartItems.removeAt(index);
+      updateCart();
+      AppMassages.showSnackBar(
+        massage: 'Item removed from cart',
+        onUndo:  () {
+          cartItems.insert(index, removedItem);
+          updateCart();
+        }
+      );
     }
-    updateCart();
   }
 
   // Show dialog box before removing product

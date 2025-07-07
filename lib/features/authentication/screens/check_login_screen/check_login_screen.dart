@@ -14,7 +14,7 @@ class CheckLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TAnimationLoaderWidgets(
+    return AnimationLoaderWidgets(
       text: text,
       animation: animation,
       showAction: true,

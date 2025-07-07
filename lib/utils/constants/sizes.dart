@@ -96,7 +96,7 @@ class AppSizes {
 
   // Vertical
   static const double productImageSizeVertical = 120.0;
-  static const double productCardVerticalHeight = 251;
+  static const double productCardVerticalHeight = 255;
   static const double productCardVerticalWidth = 180.0;
   static const double productCardVerticalRadius = defaultRadius;
 

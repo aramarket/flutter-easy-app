@@ -3,11 +3,10 @@ import 'package:get/get.dart';
 
 import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/text/section_heading.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../models/address_model.dart';
 import 'update_user_address.dart';
 import 'address_widgets/single_address.dart';
@@ -19,7 +18,7 @@ class UserAddressScreen extends StatelessWidget {
 Widget build(BuildContext context) {
   FBAnalytics.logPageView('user_address_screen');
 
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
 
   return Scaffold(
     appBar: const AppAppBar(title: "Address", showBackArrow: true, showCartIcon: true),

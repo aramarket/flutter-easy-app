@@ -49,16 +49,17 @@ class ProductCard extends StatelessWidget {
     const double productCardVerticalWidth = AppSizes.productCardVerticalWidth;
     const double productCardVerticalRadius = AppSizes.productCardVerticalRadius;
     final salePercentage = product.calculateSalePercentage();
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       width: productCardVerticalWidth,
       padding: const EdgeInsets.all(AppSizes.xs),
       decoration: BoxDecoration(
-        // color: Theme.of(context).colorScheme.surface,
+        color: isDark ? Theme.of(context).colorScheme.surface : Colors.transparent,
         borderRadius: BorderRadius.circular(productCardVerticalRadius),
         border: Border.all(
           width: AppSizes.defaultBorderWidth,
-          color: Theme.of(context).colorScheme.outline, // Border color
+          color: isDark ? Colors.transparent : Theme.of(context).colorScheme.outline, // Border color
         )
       ),
       child: Column(
@@ -175,6 +176,9 @@ class ProductCard extends StatelessWidget {
   }
 
   Container productCardHorizontal({required BuildContext context}) {
+
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     const double productImageSizeHorizontal = AppSizes.productImageSizeHorizontal;
     const double productCardHorizontalHeight = AppSizes.productCardHorizontalHeight;
     const double productCardHorizontalWidth = AppSizes.productCardHorizontalWidth;
@@ -187,11 +191,11 @@ class ProductCard extends StatelessWidget {
       // width: double.infinity,
       padding: const EdgeInsets.all(AppSizes.xs),
       decoration: BoxDecoration(
-        // color: Theme.of(context).colorScheme.surface,
+          color: isDark ? Theme.of(context).colorScheme.surface : Colors.transparent,
         borderRadius: BorderRadius.circular(productCardHorizontalRadius),
         border: Border.all(
           width: AppSizes.defaultBorderWidth,
-          color: Theme.of(context).colorScheme.outline, // Border color
+          color: isDark ? Colors.transparent : Theme.of(context).colorScheme.outline, // Border color
         )
       ),
       child: Row(

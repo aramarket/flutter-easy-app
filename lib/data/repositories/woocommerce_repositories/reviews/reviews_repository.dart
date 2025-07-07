@@ -10,8 +10,8 @@ import '../../../../utils/constants/api_constants.dart';
 import '../../../../utils/constants/local_storage_constants.dart';
 
 
-class WooReviewRepository extends GetxController {
-  static WooReviewRepository get instance => Get.find();
+class WooReviewsRepository extends GetxController {
+  static WooReviewsRepository get instance => Get.find();
 
   final Box _cacheBox = Hive.box(CacheConstants.productReviewBox); // Hive  storage
   final double cacheExpiryTimeInDays = APIConstant.productCacheTime;

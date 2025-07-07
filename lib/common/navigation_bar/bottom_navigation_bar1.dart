@@ -9,7 +9,7 @@ import '../../features/shop/controllers/cart_controller/cart_controller.dart';
 import '../../features/shop/screens/cart/cart.dart';
 import '../../features/shop/screens/category/all_category_screen.dart';
 import '../../features/shop/screens/home/home.dart';
-import '../../features/shop/screens/search/discover_screen.dart';
+import '../../features/shop/screens/discover/discover_screen.dart';
 import '../../routes/external_routes.dart';
 import '../../routes/internal_routes.dart';
 import '../../routes/routes.dart';

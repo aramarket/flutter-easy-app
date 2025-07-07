@@ -5,18 +5,14 @@ import '../../../../common/layout_models/product_grid_layout.dart';
 import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
 import '../../../../common/text/section_heading.dart';
-import '../../../../common/widgets/custom_shape/containers/rounded_container.dart';
 import '../../../../common/widgets/product/product_cards/product_card_cart_items.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/constants/text_strings.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../settings/app_settings.dart';
 import '../../controllers/cart_controller/cart_controller.dart';
 import '../../controllers/checkout_controller/checkout_controller.dart';
-import '../../controllers/order/order_controller.dart';
 import 'widgets/billing_address_section.dart';
 import 'widgets/billing_amount_section.dart';
 import 'widgets/billing_payment_section.dart';
@@ -30,7 +26,7 @@ class CheckoutScreen extends StatelessWidget {
 
     final cartController = Get.put(CartController());
     final checkoutController = Get.put(CheckoutController());
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     FBAnalytics.logPageView('checkout_screen');
     FBAnalytics.logBeginCheckout(cartItems: cartController.cartItems);
     // Trigger updateCheckout on widget initialization

@@ -22,18 +22,18 @@ class ForgetPasswordController extends GetxController{
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       //Start Loading
-      TFullScreenLoader.openLoadingDialog('Processing your request..', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('Processing your request..', Images.docerAnimation);
       //check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
         //remove Loader
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       // Form Validation
       if(!forgetPasswordFormKey.currentState!.validate()) {
         //remove Loader
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
 
@@ -43,12 +43,12 @@ class ForgetPasswordController extends GetxController{
       FBAnalytics.logLogin('forgot_password');
 
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.showToastMessage(message: 'Reset password email send');
       Get.to(() => ResetPasswordScreen(email: email));
     } catch (error) {
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     }
   }

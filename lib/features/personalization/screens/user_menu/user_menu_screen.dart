@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,23 +5,18 @@ import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
 import '../../../../common/text/section_heading.dart';
 import '../../../../common/widgets/custom_shape/image/circular_image.dart';
-import '../../../../common/widgets/shimmers/shimmer_effect.dart';
 import '../../../../common/widgets/shimmers/user_shimmer.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
 import '../../../settings/app_settings.dart';
-import '../../controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../user_profile/user_profile.dart';
 import 'widgets/contact_widget.dart';
-import 'widgets/follow_us.dart';
 import 'widgets/account_menu.dart';
 import 'widgets/other_menu.dart';
 import 'widgets/policy_widget.dart';
-import 'widgets/favourite_with_cart.dart';
 
 class UserMenuScreen extends StatelessWidget {
   const UserMenuScreen({super.key});
@@ -31,7 +25,7 @@ class UserMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('user_menu_screen');
 
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     userController.refreshCustomer();
 
     return  Scaffold(
@@ -118,7 +112,7 @@ class CustomerProfileCard extends StatelessWidget {
     required this.userController,
   });
 
-  final UserController userController;
+  final AuthenticationController userController;
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import '../../../../../utils/constants/image_strings.dart';
 import '../../../../../utils/constants/sizes.dart';
 import '../../../../../utils/formatters/formatters.dart';
 import '../../../../../utils/validators/validation.dart';
-import '../../../../personalization/controllers/user_controller.dart';
+import '../../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../controllers/product/image_controller.dart';
 import '../../../controllers/review/review_controller.dart';
 import '../../../models/review_model.dart';
@@ -23,13 +23,13 @@ class ReviewTile extends StatelessWidget {
   ReviewModel review;
   @override
   Widget build(BuildContext context) {
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     final productReviewController = Get.put(ReviewController());
     final imagesController = Get.put(ImagesController());
     // final imagesController = Get.find<ImagesController>();
 
     // Using Html widget to parse HTML text
-    final String reviewerName = Validator.isEmail(review.reviewer ?? '') ? TFormatter.maskEmail(review.reviewer ?? '') : review.reviewer ?? '';
+    final String reviewerName = Validator.isEmail(review.reviewer ?? '') ? AppFormatter.maskEmail(review.reviewer ?? '') : review.reviewer ?? '';
     return ListTile(
       contentPadding: EdgeInsets.only(top: AppSizes.sm, left: AppSizes.sm), // Removes extra padding
       leading: RoundedImage(
@@ -45,7 +45,7 @@ class ReviewTile extends StatelessWidget {
         children: [
           Text(reviewerName, style: TextStyle(fontSize: 12),),
           Icon(Icons.circle, size: 5),
-          Text(TFormatter.formatRelativeDate(review.dateCreated ?? ''), style: TextStyle(fontSize: 11))
+          Text(AppFormatter.formatRelativeDate(review.dateCreated ?? ''), style: TextStyle(fontSize: 11))
         ],
       ),
       subtitle: Column(

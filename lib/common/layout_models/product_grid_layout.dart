@@ -17,7 +17,7 @@ class ProductGridLayout extends StatelessWidget {
     required this.sourcePage,
     this.isDismissible = false,
     this.orientation = OrientationType.vertical,
-    this.emptyWidget = const TAnimationLoaderWidgets(text: 'Whoops! No products found...', animation: Images.pencilAnimation),
+    this.emptyWidget = const AnimationLoaderWidgets(text: 'Whoops! No products found...', animation: Images.pencilAnimation),
   });
 
   final dynamic controller;
@@ -51,7 +51,6 @@ class ProductGridLayout extends StatelessWidget {
                         direction: DismissDirection.endToStart, // Swipe left to remove
                         onDismissed: (direction) {
                           controller.removeProduct(productID: products[index].id.toString());
-                          AppMassages.showSnackBar(massage: 'Item removed');
                         },
                         background: Container(
                           alignment: Alignment.centerRight,

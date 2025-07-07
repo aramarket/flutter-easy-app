@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,16 +5,12 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/authentication/woo_authentication.dart';
 import '../../../../utils/constants/db_constants.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/local_storage_constants.dart';
-import '../../../../utils/helpers/navigation_helper.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
-import '../../../personalization/controllers/user_controller.dart';
-import '../../../personalization/models/user_model.dart';
+import '../Authentication_controller/authentication_controller.dart';
 import '../login_controller/login_controller.dart';
 
 class SignupController extends GetxController{
@@ -32,21 +27,21 @@ class SignupController extends GetxController{
   final phone     = TextEditingController();
   GlobalKey<FormState> signupFormKey = GlobalKey<FormState>(); //Form key for form validation
 
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
   final loginController = Get.put(LoginController());
   final wooAuthenticationRepository = Get.put(WooAuthenticationRepository());
 
   void signupWithEmailPassword() async {
     try {
       //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are creating account..', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('We are creating account..', Images.docerAnimation);
       final isConnected = await Get.put(NetworkManager()).isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       if(!signupFormKey.currentState!.validate()) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       //privacy policy check
@@ -76,70 +71,14 @@ class SignupController extends GetxController{
         localStorage.write(LocalStorage.rememberMePassword, password.text);
       }
 
-      TFullScreenLoader.stopLoading();
-      userController.login(customer: customer, loginMethod: 'signup');
+      FullScreenLoader.stopLoading();
+      userController.login(user: customer, loginMethod: 'signup');
     } catch (error) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Oh Snap!', message: error.toString());
     }
   }
 
-  void signup() async {
-    try {
-      //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are creating account..', Images.docerAnimation);
-
-      //check internet connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        //remove Loader
-        TFullScreenLoader.stopLoading();
-        return;
-      }
-
-      // Form Validation
-      if(!signupFormKey.currentState!.validate()) {
-        //remove Loader
-        TFullScreenLoader.stopLoading();
-        return;
-      }
-
-      //privacy policy check
-      if(!privacyPolicyChecked.value) {
-        AppMassages.warningSnackBar(
-            title: 'Accept Privacy Policy',
-            message: 'In order to create account, you have to read and accept the privacy Policy & Terms of Use.'
-        );
-        return;
-      }
-
-      // Register user in the Firebase Authentication & save user data in the Firebase
-      final userCredential = await AuthenticationRepository.instance.registerWithEmailAndPassword(email.text.trim(), password.text.trim());
-
-      //save Authenticated user data in the firebase FireStore
-      final newUser = UserModel(
-        userId: userCredential.user!.uid,
-        name: firstName.text.trim(),
-        email: email.text.trim(),
-        // password: password.text.trim(), // Hash the password
-        phone: phone.text.trim(),
-        dateCreated: Timestamp.now().toDate(),
-        role: UserFieldName.roleCustomer,
-      );
-
-      final userRepository = Get.put(UserRepository());
-      await userRepository.saveUserRecord(newUser);
-
-      //remove Loader
-      TFullScreenLoader.stopLoading();
-      // UserController.instance.fetchUserRecord();
-      AppMassages.showToastMessage(message: 'Your account has been created!');
-      NavigationHelper.navigateToBottomNavigation();
-    } catch (error) {
-      TFullScreenLoader.stopLoading();
-      AppMassages.errorSnackBar(title: 'Oh Snap!', message: error.toString());
-    }
-  }
 }
 
 

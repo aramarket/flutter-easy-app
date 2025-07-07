@@ -5,7 +5,7 @@ import '../constants/db_constants.dart';
 import '../constants/enums.dart';
 import '../constants/sizes.dart';
 
-class TOrderHelper {
+class OrderHelper {
 
   static bool checkOrderStatusForInTransit(OrderStatus orderStatus) {
     return  orderStatus == OrderStatus.pendingPickup ||

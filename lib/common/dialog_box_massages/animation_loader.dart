@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import '../../utils/constants/sizes.dart';
 
 /// a widgets for displaying on animated loading indicator with optional text and action button
-class TAnimationLoaderWidgets extends StatelessWidget {
+class AnimationLoaderWidgets extends StatelessWidget {
   /// default constructor for the TAnimationLoaderWidgets
   ///
   /// Parameters:
@@ -12,7 +12,7 @@ class TAnimationLoaderWidgets extends StatelessWidget {
   ///  - animation: the path to the lottie animation file.
   ///  - showAction: the text to be displayed an the action button.
   ///  - onActionPressed: Callback function to be executed when the action button pressed
-  const TAnimationLoaderWidgets({
+  const AnimationLoaderWidgets({
     super.key,
     required this.text,
     required this.animation,

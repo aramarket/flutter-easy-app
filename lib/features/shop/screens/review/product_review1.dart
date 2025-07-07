@@ -95,7 +95,7 @@ class ProductReviewScreen1 extends StatelessWidget {
                   if (productReviewController.isLoading.value){
                     return const UserTileShimmer();
                   } else if(productReviewController.reviews.isEmpty) {
-                    return const TAnimationLoaderWidgets(
+                    return const AnimationLoaderWidgets(
                       text: 'Whoops! No Review yet! Be the First Reviewer',
                       animation: Images.pencilAnimation,
                     );

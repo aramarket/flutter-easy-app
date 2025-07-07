@@ -1,5 +1,3 @@
-import 'package:aramarket/features/personalization/controllers/user_controller.dart';
-import 'package:aramarket/features/shop/screens/products/product_detail.dart';
 import 'package:aramarket/utils/constants/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,16 +10,12 @@ import '../../../../common/styles/spacing_style.dart';
 import '../../../../common/text/section_heading.dart';
 import '../../../../common/web_view/my_web_view.dart';
 import '../../../../common/widgets/product/product_cards/product_card_cart_items.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/api_constants.dart';
 import '../../../../utils/constants/colors.dart';
-import '../../../../utils/constants/db_constants.dart';
-import '../../../../utils/constants/icons.dart';
-import '../../../../utils/constants/local_storage_constants.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/helpers/order_helper.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
 import '../../../personalization/models/address_model.dart';
 import '../../../personalization/screens/user_address/address_widgets/single_address.dart';
@@ -45,8 +39,7 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
   final localStorage = GetStorage();
   final cartController = Get.put(CartController());
   final orderController = Get.put(OrderController());
-  final authenticationRepository = Get.put(AuthenticationRepository());
-  final userController = Get.put(UserController());
+  final authenticationController = Get.put(AuthenticationController());
 
   @override
   void initState() {
@@ -60,7 +53,7 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
     FBAnalytics.logPageView('order_single_screen');
     return Scaffold(
       appBar: AppAppBar(title: "Order #${orderController.currentOrder.value.id ?? ''}", showBackArrow: true, showSearchIcon: true, showCartIcon: true,),
-      body: !userController.isUserLogin.value
+      body: !authenticationController.isUserLogin.value
           ? const CheckLoginScreen()
           : RefreshIndicator(
         color: AppColors.refreshIndicator,
@@ -70,7 +63,7 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
             return Center(child: CircularProgressIndicator(strokeWidth: 3 ));
           } else if(orderController.currentOrder.value.id == null) {
             return Center(child: Text('Sorry! No Order Fount'));
-          } else if(orderController.currentOrder.value.customerId != userController.customer.value.id) {
+          } else if(orderController.currentOrder.value.customerId != authenticationController.customer.value.id) {
             return Center(child: Text('Sorry! Invalid order'));
           } else{
             final currentOrder = orderController.currentOrder.value;
@@ -245,7 +238,7 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
                     Column(
                       children: [
                         // Pay Now
-                        if (TOrderHelper.checkOrderStatusForPayment(
+                        if (OrderHelper.checkOrderStatusForPayment(
                             currentOrder.status ?? OrderStatus.unknown))
                           Column(
                             children: [
@@ -323,7 +316,7 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
                         ),
 
                         // Cancel Order
-                        if (TOrderHelper.checkOrderStatusForReturn(currentOrder.status ?? OrderStatus.unknown))
+                        if (OrderHelper.checkOrderStatusForReturn(currentOrder.status ?? OrderStatus.unknown))
                           ListTile(
                             tileColor:
                             Theme.of(context).colorScheme.surface,

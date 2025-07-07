@@ -11,7 +11,7 @@ import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
-import '../../controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../change_profile/change_user_profile.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -21,7 +21,7 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('user_profile_screen');
 
-    final controller = Get.put(UserController());
+    final controller = Get.put(AuthenticationController());
 
     return Scaffold(
       appBar: const AppAppBar(title: 'Profile Setting', showBackArrow: true),
@@ -69,7 +69,7 @@ class UserProfileScreen extends StatelessWidget {
                           color: Colors.yellow// tAccentColor.withOpacity(0.1)
                       ),
                       child: IconButton(
-                        onPressed: () => controller.uploadProfilePicture(context),
+                        onPressed: () {},
                         icon: const Icon(Iconsax.edit_2, size: 16, color: Colors.black),
                       ),
                     ),

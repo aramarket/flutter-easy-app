@@ -4,12 +4,12 @@ import '../../../../common/dialog_box_massages/full_screen_loader.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
 import '../../../../data/repositories/woocommerce_repositories/orders/woo_orders_repository.dart';
-import '../../../../data/repositories/woocommerce_repositories/product_review/product_review_repository.dart';
+import '../../../../data/repositories/woocommerce_repositories/reviews/reviews_repository.dart';
 import '../../../../services/app_review/app_review.dart';
 import '../../../../utils/constants/api_constants.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../../../utils/constants/image_strings.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../models/cart_item_model.dart';
 import '../../models/order_model.dart';
 import '../../models/review_model.dart';
@@ -27,9 +27,9 @@ class ReviewYourPurchasesController extends GetxController {
   RxList<CartModel> unreviewedCartItems = <CartModel>[].obs; // This will store only unreviewed items
   RxList<ReviewModel> editedReviews = <ReviewModel>[].obs;
 
-  final wooReviewRepository = Get.put(WooReviewRepository());
+  final wooReviewRepository = Get.put(WooReviewsRepository());
   final wooOrdersRepository = Get.put(WooOrdersRepository());
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
 
   // Get user order by customer id
   Future<void> getOrdersByCustomerId() async {
@@ -172,17 +172,17 @@ class ReviewYourPurchasesController extends GetxController {
   Future<void> submitReviewBulk() async {
     try {
       // Start Loading
-      TFullScreenLoader.openLoadingDialog('We are adding your reviews...', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('We are adding your reviews...', Images.docerAnimation);
 
       // Check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
 
       if (editedReviews.isEmpty) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'No reviews to submit.');
         return;
       }
@@ -196,10 +196,10 @@ class ReviewYourPurchasesController extends GetxController {
       editedReviews.clear();
       unreviewedCartItems.removeWhere((unreviewedCartItem) => newReviewList.any((review) => review.productId == unreviewedCartItem.productId));
       // Success feedback
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.showToastMessage(message: 'Reviews submitted successfully!');
     } catch (error) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     } finally {
       Future.delayed(Duration(seconds: 3), () async {

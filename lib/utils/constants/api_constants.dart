@@ -38,6 +38,7 @@ class APIConstant {
   static String allCategoryUrl                  = 'https://$wooBaseDomain$urlContainAllCategories';
   static String allBrandUrl                     = 'https://$wooBaseDomain$urlContainAllBrands';
   static String productBrandUrl                 = 'https://$wooBaseDomain$urlProductBrand';
+  static String productCategoryUrl              = 'https://$wooBaseDomain$urlContainProductCategory';
 
   static const String wooProductsApiPath    = '/wp-json/wc/v3/products/';
   static const String wooBrandsApiPath    = '/wp-json/wc/v3/products/brands/';

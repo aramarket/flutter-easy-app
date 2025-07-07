@@ -2,10 +2,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
-import '../../../../data/repositories/user/user_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/products/woo_product_repositories.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
-import '../../../../utils/constants/db_constants.dart';
 import '../../../../utils/constants/local_storage_constants.dart';
 import '../../models/product_model.dart';
 
@@ -54,12 +52,35 @@ class FavoriteController extends GetxController{
   }
 
   void removeProduct({required String productID}) {
-    favorites.remove(productID);
-    products.removeWhere((product) => product.id.toString() == productID);
+    // Backup data
+    final wasFavorite = favorites.contains(productID);
+    final removedProductIndex = products.indexWhere((product) => product.id.toString() == productID);
+    if (removedProductIndex == -1) return;
+
+    final removedProduct = products.removeAt(removedProductIndex);
+    if (wasFavorite) {
+      favorites.remove(productID);
+    }
+
     favorites.refresh();
     products.refresh();
     saveWishlistData();
+
+    // Show undo snackbar
+    AppMassages.showSnackBar(
+      massage: 'Product removed from wishlist',
+      onUndo: () {
+        products.insert(removedProductIndex, removedProduct);
+        if (wasFavorite) {
+          favorites.add(productID);
+        }
+        favorites.refresh();
+        products.refresh();
+        saveWishlistData();
+      },
+    );
   }
+
 
   void saveWishlistData() {
     localStorage.write(LocalStorage.wishlist, favorites); // save data in Local Storage

@@ -11,9 +11,9 @@ import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/helpers/navigation_helper.dart';
-import '../../controllers/search_controller/discover_screen_controller.dart';
+import '../../controllers/discover/discover_screen_controller.dart';
 import '../../models/product_model.dart';
-import 'search_input_field.dart';
+import '../search/search_input_field.dart';
 
 class DiscoverScreen extends StatelessWidget {
   const DiscoverScreen({super.key});
@@ -42,7 +42,7 @@ class DiscoverScreen extends StatelessWidget {
       }
     });
 
-    final Widget emptyWidget = TAnimationLoaderWidgets(
+    final Widget emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! No Product Found...',
       animation: Images.pencilAnimation,
       showAction: true,

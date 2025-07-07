@@ -1,15 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../../data/repositories/firebase/orders/order_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/orders/woo_orders_repository.dart';
 import '../../../../utils/constants/db_constants.dart';
 import '../../../../utils/constants/enums.dart';
 import '../../../personalization/controllers/address_controller.dart';
-import '../../../personalization/controllers/user_controller.dart';
-import '../../../settings/app_settings.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../models/order_model.dart';
 import '../cart_controller/cart_controller.dart';
 import '../checkout_controller/checkout_controller.dart';
@@ -29,8 +25,7 @@ class OrderController extends GetxController {
   final addressController = Get.put(AddressController());
   final checkoutController = Get.put(CheckoutController());
   final wooOrdersRepository = Get.put(WooOrdersRepository());
-  final orderRepository = Get.put(OrderRepository());
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
   final paymentController = Get.put(PaymentController());
 
   Future<void> fetchOrder({required OrderModel? order, required String? orderId}) async {
@@ -225,7 +220,7 @@ class OrderController extends GetxController {
     bool isPaymentCaptured = false;
     String paymentId = '';
     try {
-      TFullScreenLoader.onlyCircularProgressDialog('Please wait while we process your payment...');
+      FullScreenLoader.onlyCircularProgressDialog('Please wait while we process your payment...');
       paymentId = await paymentController.startPayment(order: order);
       if (paymentId.isNotEmpty) {
         // Capture payment
@@ -236,12 +231,12 @@ class OrderController extends GetxController {
           OrderFieldName.setPaid: true,
         };
         await updateOrderById(orderId: order.id.toString(), data: data);
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.successSnackBar(title: 'Payment Successful:', message: 'Payment ID: $paymentId');
       }
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
     } catch(e) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Payment Failed', message: e.toString());
     } finally {
       if(!isPaymentCaptured){

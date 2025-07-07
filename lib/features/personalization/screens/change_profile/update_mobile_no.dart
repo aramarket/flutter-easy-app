@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
 import '../../controllers/change_profile_controller.dart';
-import '../../controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 
 class UpdateMobileNo extends StatelessWidget {
   const UpdateMobileNo({super.key});
@@ -17,7 +16,7 @@ class UpdateMobileNo extends StatelessWidget {
     FBAnalytics.logPageView('update_profile_screen');
 
     final changeProfileController = Get.put(ChangeProfileController());
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     userController.refreshCustomer();
     bool isShowPhoneField = true;
 

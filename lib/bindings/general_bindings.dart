@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 
 import '../common/widgets/network_manager/network_manager.dart';
-import '../data/repositories/user/user_repository.dart';
 import '../data/repositories/woocommerce_repositories/authentication/woo_authentication.dart';
 import '../data/repositories/woocommerce_repositories/customers/woo_customer_repository.dart';
 import '../features/personalization/controllers/address_controller.dart';
-import '../features/personalization/controllers/user_controller.dart';
+import '../features/authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../features/settings/controllers/settings_controller.dart';
 import '../features/shop/controllers/cart_controller/cart_controller.dart';
 import '../features/shop/controllers/checkout_controller/checkout_controller.dart';
@@ -18,8 +17,7 @@ class GeneralBindings extends Bindings {
   void dependencies() {
     Get.lazyPut(() => NetworkManager());
     Get.lazyPut(() => SettingsController());
-    Get.lazyPut(() => UserRepository());
-    Get.lazyPut(() => UserController());
+    Get.lazyPut(() => AuthenticationController());
     Get.lazyPut(() => AddressController());
     Get.lazyPut(() => FavoriteController());
     Get.lazyPut(() => CheckoutController());

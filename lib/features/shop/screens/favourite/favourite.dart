@@ -7,15 +7,11 @@ import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
 import '../../../../common/text/section_heading.dart';
 import '../../../../common/dialog_box_massages/animation_loader.dart';
-import '../../../../common/widgets/product/product_cards/product_card.dart';
-import '../../../../common/widgets/shimmers/product_shimmer.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/helpers/navigation_helper.dart';
-import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
 import '../../controllers/favorite/favorite_controller.dart';
 
 class FavouriteScreen extends StatelessWidget {
@@ -27,7 +23,6 @@ class FavouriteScreen extends StatelessWidget {
 
     final ScrollController scrollController = ScrollController();
     final favoriteController = Get.put(FavoriteController());
-    final authenticationRepository = Get.put(AuthenticationRepository());
 
     favoriteController.refreshFavorites();
 
@@ -48,7 +43,7 @@ class FavouriteScreen extends StatelessWidget {
       }
     });
 
-    final Widget emptyWidget = TAnimationLoaderWidgets(
+    final Widget emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! Wishlist is Empty...',
       animation: Images.pencilAnimation,
       showAction: true,

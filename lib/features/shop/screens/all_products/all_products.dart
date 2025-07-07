@@ -58,7 +58,7 @@ class TAllProducts extends StatelessWidget {
         }
       }
     });
-    final Widget emptyWidget = const TAnimationLoaderWidgets(
+    final Widget emptyWidget = const AnimationLoaderWidgets(
       text: 'Whoops! No products fount...',
       animation: Images.pencilAnimation,
     );

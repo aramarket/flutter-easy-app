@@ -4,7 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../services/app_review/app_review.dart';
-import '../personalization/controllers/user_controller.dart';
+import '../authentication/controllers/Authentication_controller/authentication_controller.dart';
 
 class AppSettings {
 
@@ -19,7 +19,6 @@ class AppSettings {
   static const int otpLength              =  4;
   static const int otpResendTimer         =  60;
   static String version = '';
-  static late PackageInfo _packageInfo;
 
   // Images
   static const String lightAppLogo  = 'assets/logos/aramarket_light.png';
@@ -61,13 +60,10 @@ class AppSettings {
   static const String youtube               = 'https://www.youtube.com/@aramarket';
   static const String playStore             = 'https://play.google.com/store/apps/details?id=com.company.aramarketin&hl=en_IN&gl=US';
 
-  static Future<void> initialize() async {
-  }
-
   static Future<void> init() async {
     final info = await PackageInfo.fromPlatform();
     version = info.version;
-    await Get.put(UserController()).checkIsUserLogin();
+    await Get.put(AuthenticationController()).checkIsUserLogin();
   }
 
   static String get appVersion => version;

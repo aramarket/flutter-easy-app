@@ -2,7 +2,6 @@
 import 'package:get/get.dart';
 
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
-import '../../../../data/repositories/firebase/banners/banner_repository.dart';
 import '../../../../data/repositories/woocommerce_repositories/banners/woo_banners_repositories.dart';
 import '../../../../utils/constants/api_constants.dart';
 import '../../models/banner_model.dart';

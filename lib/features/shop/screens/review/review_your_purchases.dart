@@ -13,7 +13,7 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../controllers/review/all_review_controller.dart';
 import '../products/scrolling_products.dart';
 import 'all_reviews.dart';
@@ -27,12 +27,12 @@ class ReviewYourPurchases extends StatelessWidget {
     FBAnalytics.logPageView('review_your_purchases');
 
     final reviewYourPurchasesController = Get.put(ReviewYourPurchasesController());
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     const double allReviewTileHeight = AppSizes.reviewYourPurchaseTileHeight;
 
     reviewYourPurchasesController.refreshAllReview();
 
-    final Widget emptyWidget = TAnimationLoaderWidgets(
+    final Widget emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! No Purchased Product found...',
       animation: Images.pencilAnimation,
       // showAction: true,

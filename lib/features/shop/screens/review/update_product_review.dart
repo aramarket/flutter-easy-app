@@ -3,13 +3,12 @@ import 'package:get/get.dart';
 
 import '../../../../common/navigation_bar/app_appbar.dart';
 import '../../../../common/styles/spacing_style.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
 import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../controllers/review/review_controller.dart';
 import '../../models/review_model.dart';
 
@@ -21,7 +20,7 @@ class UpdateReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('review_update_screen');
 
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     final productReviewController = Get.put(ReviewController());
     productReviewController.editRating.value = review.rating ?? 0;
     productReviewController.editProductReview.text = review.review?.replaceAll('<p>', '').replaceAll('</p>', '').replaceAll('<br />', '') ?? '';

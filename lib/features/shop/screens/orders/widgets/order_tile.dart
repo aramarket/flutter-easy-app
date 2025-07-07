@@ -17,8 +17,8 @@ import '../../../models/order_model.dart';
 import '../single_order_screen.dart';
 import 'order_image_gallery.dart';
 
-class SingleOrderTile extends StatelessWidget {
-  const SingleOrderTile({super.key, required this.order});
+class OrderTile extends StatelessWidget {
+  const OrderTile({super.key, required this.order});
 
   final OrderModel order;
 
@@ -87,12 +87,12 @@ class SingleOrderTile extends StatelessWidget {
                     Text('Order Date'),
                     Row(
                       children: [
-                        Text(TFormatter.formatStringDate(order.dateCreated ?? '')),
+                        Text(AppFormatter.formatStringDate(order.dateCreated ?? '')),
                       ],
                     ),
                   ],
                 ),
-                TOrderHelper.checkOrderStatusForPayment(order.status ?? OrderStatus.unknown)
+                OrderHelper.checkOrderStatusForPayment(order.status ?? OrderStatus.unknown)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -123,7 +123,7 @@ class SingleOrderTile extends StatelessWidget {
                             spacing: AppSizes.sm,
                             children: [
                               Text(order.status?.prettyName ?? ''),
-                              if(TOrderHelper.checkOrderStatusForInTransit(order.status ?? OrderStatus.unknown))
+                              if(OrderHelper.checkOrderStatusForInTransit(order.status ?? OrderStatus.unknown))
                                 InkWell(
                                 onTap: () => Get.to(() => MyWebView(title: 'Track Order #${order.id}', url: APIConstant.wooTrackingUrl + order.id.toString())),
                                 child: const Icon(Icons.open_in_new, size: 17, color: AppColors.linkColor,),

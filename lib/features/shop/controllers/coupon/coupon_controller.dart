@@ -86,7 +86,7 @@ class CouponController extends GetxController {
 
       AppMassages.showToastMessage(message: 'Coupon applied successfully');
       // Show the GIF
-      TFullScreenLoader.showCouponGif();
+      FullScreenLoader.showCouponGif();
 
     } catch(error){
       // Handle error occurred during coupon retrieval

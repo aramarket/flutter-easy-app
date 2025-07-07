@@ -10,7 +10,7 @@ import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/constants/text_strings.dart';
 import '../../../../utils/validators/validation.dart';
 import '../../controllers/change_profile_controller.dart';
-import '../../controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 
 
 class ChangeUserProfile extends StatelessWidget {
@@ -21,7 +21,7 @@ class ChangeUserProfile extends StatelessWidget {
     FBAnalytics.logPageView('change_user_profile_screen');
 
     final changeProfileController = Get.put(ChangeProfileController());
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     changeProfileController.firstName.text = userController.customer.value.firstName ?? '';
     changeProfileController.lastName.text = userController.customer.value.lastName ?? '';
     changeProfileController.email.text = userController.customer.value.email ?? '';

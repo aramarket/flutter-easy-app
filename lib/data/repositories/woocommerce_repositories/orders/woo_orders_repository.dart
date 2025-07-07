@@ -49,11 +49,14 @@ class WooOrdersRepository extends GetxController {
 
   // Fetch orders by customer's id
   Future<List<OrderModel>> fetchOrdersByCustomerId({required String customerId, required String page, OrderStatus? orderStatus}) async {
-    final String cacheKey = 'fetch_order_customer_id_$page';
-
     if(customerId.isEmpty && int.parse(customerId) == 0) {
       throw Exception('Customer ID is empty');
     }
+
+    // Include status in cache key if provided
+    final String statusSuffix = orderStatus != null ? '_status_${orderStatus.name}' : '';
+    final String cacheKey = 'fetch_order_customer_${customerId}_page_$page$statusSuffix';
+
     // Check cache before making API request
     if (_cacheBox.containsKey(cacheKey) && CacheHelper.isCacheValid(cacheBox: _cacheBox, cacheKey: cacheKey, expiryTimeInDays: cacheExpiryTimeInDays)) {
       final cachedData = _cacheBox.get(cacheKey);

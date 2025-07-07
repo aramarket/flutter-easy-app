@@ -62,7 +62,7 @@ class OrderShimmer extends StatelessWidget {
                   ),
                 ],
               ),
-              Positioned(top: 0, right: 0, child: TOrderHelper.mapOrderStatus(OrderStatus.unknown)),
+              Positioned(top: 0, right: 0, child: OrderHelper.mapOrderStatus(OrderStatus.unknown)),
             ],
           ),
         );

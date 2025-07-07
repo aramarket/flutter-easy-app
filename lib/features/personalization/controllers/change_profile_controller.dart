@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -14,8 +13,7 @@ import '../../../utils/constants/sizes.dart';
 import '../../../common/dialog_box_massages/full_screen_loader.dart';
 import '../models/user_model.dart';
 import '../screens/user_profile/user_profile.dart';
-import '/features/personalization/controllers/user_controller.dart';
-import '../../../data/repositories/user/user_repository.dart';
+import '../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 
 class ChangeProfileController extends GetxController {
   static ChangeProfileController get instance => Get.find();
@@ -34,24 +32,23 @@ class ChangeProfileController extends GetxController {
   GlobalKey<FormState> updatePhoneFormKey = GlobalKey<FormState>();
 
   final localStorage = GetStorage();
-  final userController = Get.put(UserController());
-  final userRepository = Get.put(UserRepository());
+  final userController = Get.put(AuthenticationController());
   final wooCustomersRepository = Get.put(WooCustomersRepository());
 
   // Woocommerce update profile details
   Future<void> wooChangeProfileDetails() async {
     try {
       //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are updating your information..', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('We are updating your information..', Images.docerAnimation);
       //check internet connectivity
       final isConnected = await NetworkManager.instance.isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
       // Form Validation
       if (!changeProfileFormKey.currentState!.validate()) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
 
@@ -73,7 +70,7 @@ class ChangeProfileController extends GetxController {
       // update email to local storage too
       localStorage.write(LocalStorage.rememberMeEmail, email.text.trim());
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       // UserController.instance.fetchUserRecord();
       AppMassages.showToastMessage(message: 'Details updated successfully!');
       // move to next screen
@@ -81,7 +78,7 @@ class ChangeProfileController extends GetxController {
       Get.off(() => const UserProfileScreen());
     } catch (error) {
       //remove Loader
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       AppMassages.errorSnackBar(title: 'Error', message: error.toString());
     }
   }
@@ -128,49 +125,6 @@ class ChangeProfileController extends GetxController {
       return customer;
     } catch (error) {
       rethrow;
-    }
-  }
-
-  // Change profile details
-  Future<void> changeProfileDetails() async {
-    try {
-      //Start Loading
-      TFullScreenLoader.openLoadingDialog('We are updating your information..', Images.docerAnimation);
-      //check internet connectivity
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        TFullScreenLoader.stopLoading();
-        return;
-      }
-      // Form Validation
-      if (!changeProfileFormKey.currentState!.validate()) {
-        TFullScreenLoader.stopLoading();
-        return;
-      }
-
-      //update single field user
-      Map<String, dynamic> updateField = {
-        UserFieldName.name: firstName.text.trim(),
-        UserFieldName.email: email.text.trim(),
-        UserFieldName.phone: phone.text.trim(),
-        UserFieldName.dateModified: Timestamp.now().toDate(),
-      };
-      await userRepository.updateSingleField(updateField);
-
-      //update the Rx user value
-      userController.customer.value.firstName = firstName.text.trim();
-      userController.customer.value.email = email.text.trim();
-      userController.customer.value.email = phone.text.trim();
-
-      //remove Loader
-      TFullScreenLoader.stopLoading();
-      AppMassages.successSnackBar(title: 'Congratulation', message: 'Your details updated successfully!');
-      Get.back();
-    } catch (error) {
-      //remove Loader
-      TFullScreenLoader.stopLoading();
-      //show some Generic error to the user
-      AppMassages.errorSnackBar(title: 'Error - Change Profile', message: error.toString());
     }
   }
 

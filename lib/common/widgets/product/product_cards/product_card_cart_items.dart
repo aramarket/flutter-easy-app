@@ -21,6 +21,8 @@ class ProductCardForCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+
     const double cartCardImageSize = AppSizes.cartCardImageSize;
     const double cartCardHorizontalHeight = AppSizes.cartCardHorizontalHeight;
     const double cartCardHorizontalWidth = AppSizes.cartCardHorizontalWidth;
@@ -35,11 +37,11 @@ class ProductCardForCart extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(AppSizes.xs),
             decoration: BoxDecoration(
-              // color: Theme.of(context).colorScheme.surface,
+              color: isDark ? Theme.of(context).colorScheme.surface : Colors.transparent,
               borderRadius: BorderRadius.circular(cartCardHorizontalRadius),
               border: Border.all(
                 width: AppSizes.defaultBorderWidth,
-                color: Theme.of(context).colorScheme.outline, // Border color
+                color: isDark ? Colors.transparent : Theme.of(context).colorScheme.outline, // Border color
               )
             ),
             child: Row(

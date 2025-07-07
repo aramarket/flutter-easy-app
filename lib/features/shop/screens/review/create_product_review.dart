@@ -10,7 +10,7 @@ import '../../../../utils/constants/colors.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../../utils/validators/validation.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../controllers/review/review_controller.dart';
 
 class CreateReviewScreen extends StatelessWidget {
@@ -23,7 +23,7 @@ class CreateReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('review_create_screen');
 
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     final productReviewController = Get.put(ReviewController());
     return Scaffold(
       appBar: const AppAppBar(title: 'Submit Reviews', showBackArrow: true, showCartIcon: true,),

@@ -72,7 +72,7 @@ class CouponListLayout extends StatelessWidget {
           if(couponController.isLoading.value){
             return const CouponShimmer();
           }else if(couponController.coupons.isEmpty) {
-            return const TAnimationLoaderWidgets(
+            return const AnimationLoaderWidgets(
               text: 'Whoops! Order is Empty...',
               animation: Images.pencilAnimation,
             );

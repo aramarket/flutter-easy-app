@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import '../../utils/constants/colors.dart';
 import 'animation_loader.dart';
 
-class TFullScreenLoader {
+class FullScreenLoader {
   static void openLoadingDialog(String text, String animation) {
     showDialog(
         context: Get.overlayContext!,  //use get.overlayContext for overlay dialog
@@ -19,7 +19,7 @@ class TFullScreenLoader {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TAnimationLoaderWidgets(text: text, animation: animation,),
+                AnimationLoaderWidgets(text: text, animation: animation,),
               ],
             ),
           )

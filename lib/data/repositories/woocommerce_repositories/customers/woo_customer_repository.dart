@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../../features/personalization/controllers/user_controller.dart';
+import '../../../../features/authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../../../features/personalization/models/user_model.dart';
 import '../../../../utils/cache/cache.dart';
 import '../../../../utils/constants/api_constants.dart';

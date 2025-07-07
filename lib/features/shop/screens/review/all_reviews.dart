@@ -8,7 +8,7 @@ import '../../../../services/firebase_analytics/firebase_analytics.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/sizes.dart';
 import '../../../authentication/screens/check_login_screen/check_login_screen.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../../../authentication/controllers/Authentication_controller/authentication_controller.dart';
 import '../../models/review_model.dart';
 import 'widgets/user_review_card.dart';
 
@@ -20,11 +20,11 @@ class AllReviews extends StatelessWidget {
   Widget build(BuildContext context) {
     FBAnalytics.logPageView('all_reviews');
 
-    final userController = Get.put(UserController());
+    final userController = Get.put(AuthenticationController());
     const double allReviewTileHeight = AppSizes.reviewYourPurchaseTileHeight;
 
 
-    final Widget emptyWidget = TAnimationLoaderWidgets(
+    final Widget emptyWidget = AnimationLoaderWidgets(
       text: 'Whoops! No Reviews found...',
       animation: Images.pencilAnimation,
     );

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/constants/db_constants.dart';
@@ -79,8 +78,8 @@ class OrderModel {
   });
 
   DateTime get parsedCreatedDate => DateTime.parse(dateCreated!);
-  String get formattedOrderDate => TFormatter.formatStringDate(dateCreated!);
-  String get formattedOrderCompleted => TFormatter.formatStringDate(dateCompleted!);
+  String get formattedOrderDate => AppFormatter.formatStringDate(dateCreated!);
+  String get formattedOrderCompleted => AppFormatter.formatStringDate(dateCompleted!);
 
   // Method to calculate the sum of total prices
   int calculateTotalSum() {
@@ -182,41 +181,6 @@ class OrderModel {
       "total": '${AppSettings.shippingCharge}'
     }
   ];
-
-  factory OrderModel.fromSnapshot(DocumentSnapshot snapshot) {
-    final data = snapshot.data() as Map<String, dynamic>;
-
-    return OrderModel(
-      id:             data[OrderFieldName.id] ?? '',
-      status:         data[OrderFieldName.status] ?? '',
-      currency:       data[OrderFieldName.currency] ?? '',
-      pricesIncludeTax: data[OrderFieldName.pricesIncludeTax] ?? false,
-      dateCreated:    data[OrderFieldName.dateCreated] ?? '',
-      dateModified:   data[OrderFieldName.dateModified] ?? '',
-      discountTotal:  data[OrderFieldName.discountTotal] ?? '',
-      discountTax:    data[OrderFieldName.discountTax] ?? '',
-      shippingTotal:  data[OrderFieldName.shippingTotal] ?? '',
-      shippingTax:    data[OrderFieldName.shippingTax] ?? '',
-      cartTax:        data[OrderFieldName.cartTax] ?? '',
-      total:          data[OrderFieldName.total] ?? '',
-      totalTax:       data[OrderFieldName.totalTax] ?? '',
-      customerId:     data[OrderFieldName.customerId] ?? '',
-      billing:        AddressModel.fromJson(data[OrderFieldName.billing] ?? {}),
-      shipping:       AddressModel.fromJson(data[OrderFieldName.shipping] ?? {}),
-      paymentMethod:  data[OrderFieldName.paymentMethod] ?? '',
-      paymentMethodTitle: data[OrderFieldName.paymentMethodTitle] ?? '',
-      transactionId:  data[OrderFieldName.transactionId] ?? '',
-      customerIpAddress: data[OrderFieldName.customerIpAddress] ?? '',
-      customerUserAgent: data[OrderFieldName.customerUserAgent] ?? '',
-      customerNote:   data[OrderFieldName.customerNote] ?? '',
-      dateCompleted:  data[OrderFieldName.dateCompleted] ?? '',
-      datePaid:       data[OrderFieldName.datePaid] ?? '',
-      number:         data[OrderFieldName.number] ?? '',
-      lineItems:      (data[OrderFieldName.lineItems] as List<dynamic>).map((itemData) => CartModel.fromJson(itemData as Map<String, dynamic>)).toList(),
-      paymentUrl:     data[OrderFieldName.paymentUrl] ?? '',
-      currencySymbol: data[OrderFieldName.currencySymbol] ?? '',
-    );
-  }
 
 }
 

@@ -58,7 +58,7 @@ class AllBrandScreen extends StatelessWidget {
               if (brandController.isLoading.value){
                 return const BrandTileShimmer(itemCount: 20, crossAxisCount: 3);
               } else if(brandController.productBrands.isEmpty) {
-                return const TAnimationLoaderWidgets(
+                return const AnimationLoaderWidgets(
                   text: 'Whoops! Brands is Empty...',
                   animation: Images.pencilAnimation,
                 );

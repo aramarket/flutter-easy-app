@@ -8,15 +8,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../common/dialog_box_massages/snack_bar_massages.dart';
 import '../../../../common/widgets/network_manager/network_manager.dart';
-import '../../../../data/repositories/authentication/authentication_repository.dart';
-import '../../../../data/repositories/authentication/phone_auth_repository.dart';
-import '../../../../data/repositories/authentication/fast2sms.dart';
-import '../../../../data/repositories/whatsapp_api/whatsapp_api.dart';
+import '../../../../data/repositories/whatsapp_api/authentication/whatsapp_auth_repo.dart';
 import '../../../../data/repositories/woocommerce_repositories/customers/woo_customer_repository.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../common/dialog_box_massages/full_screen_loader.dart';
 import '../../../../utils/validators/validation.dart';
-import '../../../personalization/controllers/user_controller.dart';
+import '../Authentication_controller/authentication_controller.dart';
 import '../../../personalization/models/user_model.dart';
 import '../../screens/create_account/signup.dart';
 import '../../screens/phone_otp_login/enter_otp_screen.dart';
@@ -49,10 +46,8 @@ class OTPController extends GetxController {
   static const int maxVerificationAttempts = 5;
   static const Duration attemptWindow = Duration(minutes: 10);
 
-  final phoneAuthRepository = Get.put(PhoneAuthRepository());
-  final fast2SmsRepository = Get.put(Fast2SmsRepository());
   final wooCustomersRepository = Get.put(WooCustomersRepository());
-  final userController = Get.put(UserController());
+  final userController = Get.put(AuthenticationController());
 
 
   @override
@@ -76,41 +71,6 @@ class OTPController extends GetxController {
   //     // RequestPermissions.showPermissionDialog(context);
   //   }
   // }
-
-  // only for india
-  Future<void> fast2SmsSendOpt({required String phone}) async {
-    try {
-      isLoading(true);
-      //check internet connectivity
-      final isConnected = await Get.put(NetworkManager()).isConnected();
-      if (!isConnected) {
-        AppMassages.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection.');
-        return;
-      }
-
-      String? formattedPhone = Validator.getFormattedTenDigitNumber(phone);
-      if (formattedPhone == null) {
-        AppMassages.errorSnackBar(title: 'Error', message: 'No 10-digit number found');
-        return;
-      }
-
-      _generateAndStoreOtp();
-      Map<String, dynamic> otpData = {
-        'route': 'otp',
-        'variables_values': _generatedOtp,
-        'numbers': phone,
-      };
-
-      await fast2SmsRepository.fast2SmsSendOTP(otpData);
-      Get.to(() => const EnterOTPScreen());
-
-    } catch (error) {
-      //show some Generic error to the user
-      AppMassages.errorSnackBar(title: 'Oh Snap!', message: error.toString());
-    } finally {
-      isLoading(false);
-    }
-  }
 
   // Send OTP through WhatsApp API
   Future<void> whatsappSendOtp({required String phone}) async {
@@ -164,18 +124,18 @@ class OTPController extends GetxController {
     String phone = ''; // Initialize with an empty string
     try {
       // Start Loading
-      TFullScreenLoader.openLoadingDialog('Logging you in...', Images.docerAnimation);
+      FullScreenLoader.openLoadingDialog('Logging you in...', Images.docerAnimation);
 
       final isConnected = await Get.put(NetworkManager()).isConnected();
       if (!isConnected) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         return;
       }
 
       phone = phoneNumber.value;
       String? formattedPhone = Validator.getFormattedTenDigitNumber(phone);
       if (formattedPhone == null) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'No 10-digit number found');
         return;
       }
@@ -188,7 +148,7 @@ class OTPController extends GetxController {
       final recentAttempts = attempts.where((t) => now.difference(t) < attemptWindow).toList();
 
       if (recentAttempts.length >= maxVerificationAttempts) {
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(
           title: 'Too Many Attempts',
           message: 'Too many incorrect attempts. Try again later.',
@@ -201,7 +161,7 @@ class OTPController extends GetxController {
         recentAttempts.add(now); // Log failed attempt
         _otpVerificationAttempts[formattedPhone] = recentAttempts;
 
-        TFullScreenLoader.stopLoading();
+        FullScreenLoader.stopLoading();
         AppMassages.errorSnackBar(title: 'Error', message: 'Invalid OTP');
         return;
       }
@@ -213,78 +173,15 @@ class OTPController extends GetxController {
       final CustomerModel customer = await wooCustomersRepository.fetchCustomerById(userId);
 
       isPhoneVerified.value = true;
-      TFullScreenLoader.stopLoading();
-      userController.login(customer: customer, loginMethod: 'PhoneOTP');
+      FullScreenLoader.stopLoading();
+      userController.login(user: customer, loginMethod: 'PhoneOTP');
     } catch (error) {
-      TFullScreenLoader.stopLoading();
+      FullScreenLoader.stopLoading();
       await GoogleSignIn().signOut();
       await FirebaseAuth.instance.signOut();
 
       if (error.toString().contains('Customer not found')) {
         Get.put(SignupController()).phone.text = Validator.getFormattedTenDigitNumber(phone) ?? '';
-        Get.to(() => SignUpScreen());
-      } else {
-        AppMassages.errorSnackBar(title: 'Error', message: error.toString());
-      }
-    }
-  }
-
-  //these function for firebase
-  Future<void> phoneAuthentication(String countryCode, String phone) async {
-    try {
-      //check internet connectivity
-      final isConnected = await Get.put(NetworkManager()).isConnected();
-      if (!isConnected) {
-        AppMassages.errorSnackBar(title: 'No Internet', message: 'Please check your internet connection.');
-        return;
-      }
-      String? formattedPhone = Validator.getFormattedTenDigitNumber(phone);
-      if (formattedPhone == null) {
-        AppMassages.errorSnackBar(title: 'Error', message: 'No 10-digit number found');
-        return;
-      }
-
-    await phoneAuthRepository.phoneAuthentication('+$countryCode$formattedPhone');
-    Get.to(() => const EnterOTPScreen());
-
-    } catch (error) {
-      //show some Generic error to the user
-      AppMassages.errorSnackBar(title: 'Oh Snap!', message: error.toString());
-    }
-  }
-
-  Future<void> verifyOTP(String otp) async {
-    String googlePhone = ''; // Initialize with an empty string
-    try {
-      //Start Loading
-      TFullScreenLoader.openLoadingDialog('Logging you in...', Images.docerAnimation);
-      final isConnected = await NetworkManager.instance.isConnected();
-      if (!isConnected) {
-        TFullScreenLoader.stopLoading();
-        return;
-      }
-
-      //Google Authentication
-      final userCredentials = await phoneAuthRepository.verifyOTP(otp);
-      googlePhone = userCredentials.user?.phoneNumber ?? '';
-      String? formattedPhone = Validator.getFormattedTenDigitNumber(googlePhone);
-      if (formattedPhone == null) {
-        AppMassages.errorSnackBar(title: 'Error', message: 'No 10-digit number found');
-        return;
-      }
-
-      final userId = await wooCustomersRepository.fetchCustomerByPhone(formattedPhone);
-      final CustomerModel customer = await wooCustomersRepository.fetchCustomerById(userId);
-
-      TFullScreenLoader.stopLoading();
-      userController.login(customer: customer, loginMethod: 'PhoneOTP');
-    } catch (error) {
-      // Remove Loader
-      TFullScreenLoader.stopLoading();
-      await GoogleSignIn().signOut();
-      await FirebaseAuth.instance.signOut();
-      if (error.toString().contains('Customer not found')) {
-        Get.put(SignupController()).phone.text = googlePhone; // Now 'googleEmail' is accessible here
         Get.to(() => SignUpScreen());
       } else {
         AppMassages.errorSnackBar(title: 'Error', message: error.toString());
